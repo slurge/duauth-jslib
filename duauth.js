@@ -1,8 +1,10 @@
 const input = document.getElementById('input');
+let user = document.querySelector('.duauth-user');
 
 let tiempoUltimoKey = null;
+let agent = navigator.userAgent;
 let arrayCadencia = [];
-
+console.log(agent)
 // Cancelamos el evento de paste para que la gente escriba su contraseña
 input.addEventListener('paste', (evento) => evento.preventDefault());
 
@@ -33,8 +35,22 @@ input.addEventListener('keydown', (evento) => {
   // Hacemos algo con la diferencia de tiempo
   const diferenciaDeTiempo = tiempoActual - tiempoUltimoKey;
   arrayCadencia.push(diferenciaDeTiempo);
-  console.log('cadencia', input.value, arrayCadencia);
+  //console.log('cadencia', input.value, arrayCadencia);
   
   // console.log(diferenciaDeTiempo); // para DEBUG
   tiempoUltimoKey = tiempoActual;
 });
+
+function mandar() {
+  console.log(user.value)
+  var xmlhttp = new XMLHttpRequest();
+  var data = {'cadencia': arrayCadencia,
+                'agent' : agent,
+                'token' : '000001',
+                 'user' : user.value};
+  xmlhttp.open('POST','http://localhost/duat/aber/aberapi', true);
+  xmlhttp.setRequestHeader("Content-type", "application/json");
+  xmlhttp.send(JSON.stringify(data));
+  console.log(xmlhttp);
+  //console.log('cadencia', input.value, arrayCadencia); 
+}
